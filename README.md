@@ -1,45 +1,25 @@
-# أي حاجة معاكي — Interactive Lyrics Player
+# Interactive Lyrics Player — For Faustina
 
-صفحة ويب جاهزة فيها:
+A responsive, mobile-friendly interactive song page with synchronized, clickable lyrics.
 
-- صورة الغلاف واسم الأغنية.
-- تشغيل وإيقاف وتقديم وتأخير.
-- كلمات متزامنة بتتحرك تلقائيًا.
-- الضغط على أي سطر ينقلك لنفس الجزء في الأغنية.
-- محرر توقيت مدمج لتظبيط أي سطر.
-- تصميم موبايل وديسكتوب، من غير مكتبات أو اشتراكات.
+## Replace the cover
+Replace `assets/cover.jpg` with your final photo using the exact same filename. If you prefer PNG, change `cover` in `song-data.js` to `assets/cover.png` and upload that file.
 
-## تغيير الصورة
+## Main files
+- `index.html` — page structure
+- `styles.css` — responsive styling + dark/light mode
+- `app.js` — player, lyrics, sharing, download, and theme behavior
+- `song-data.js` — song metadata and lyric timings
+- `assets/song.mp3` — audio file
+- `assets/cover.jpg` — cover image
 
-استبدل الملف:
+## Editing lyric timings
+The timing editor is hidden from the normal gift page. To open it, add `?edit=1` to your published URL.
 
-`assets/cover.jpg`
+Example:
+`https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/?edit=1`
 
-بصورتك الجديدة **بنفس الاسم**. مش محتاج تعدّل أي كود. يفضّل صورة مربعة 1200×1200 أو أكبر.
+Play the song and press **Mark & next** when each selected lyric starts. When finished, choose **Download song-data.js** and replace the old `song-data.js` in your GitHub repository.
 
-## تعديل توقيت الكلمات
-
-1. افتح `index.html?edit=1` أو افتح قائمة الثلاث نقاط واختر **تعديل توقيت الكلمات**.
-2. شغّل الأغنية وحدد أول سطر تريد ضبطه.
-3. عند بداية السطر اضغط **ثبّت وروح للي بعده**.
-4. بعد الانتهاء اضغط **تحميل song-data.js**.
-5. استبدل ملف `song-data.js` القديم بالملف الذي تم تحميله.
-
-التوقيت الموجود حاليًا نسخة أولية موزعة على بنية الأغنية، والمحرر موجود لتظبيطها بدقة على الغناء.
-
-## نشر الصفحة وإرسالها كلينك
-
-ارفع **كل محتويات المجلد معًا** على خدمة استضافة static مثل Netlify Drop أو GitHub Pages. لازم الملفات تفضل بنفس الترتيب:
-
-```
-index.html
-styles.css
-app.js
-song-data.js
-assets/
-  cover.jpg
-  song.mp3
-  favicon.svg
-```
-
-بعد الرفع ابعت اللينك لها. المتصفح لن يشغل الصوت تلقائيًا قبل أن تضغط هي على زر **افتحي الأغنية**؛ ده سلوك أمان طبيعي في المتصفحات.
+## MP3 download
+The page includes a **Download MP3** option. The file downloaded is `For-Faustina.mp3`.

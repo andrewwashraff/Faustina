@@ -18,6 +18,7 @@
   const bottomSheet = $('#bottomSheet');
   const sheetBackdrop = $('#sheetBackdrop');
   const toast = $('#toast');
+  const themeMeta = $('meta[name="theme-color"]');
 
   const originalTimes = [];
   const flatLyrics = [];
@@ -30,6 +31,8 @@
   let isDraggingSeek = false;
 
   const storageKey = `lyrics-times:${data.title}`;
+  const themeStorageKey = 'faustina-player-theme';
+  const params = new URLSearchParams(location.search);
 
   function formatTime(seconds, withHundredths = false) {
     if (!Number.isFinite(seconds)) seconds = 0;
@@ -40,10 +43,39 @@
       : `${minutes}:${String(Math.floor(secs)).padStart(2, '0')}`;
   }
 
+  function preferredTheme() {
+    try {
+      const saved = localStorage.getItem(themeStorageKey);
+      if (saved === 'light' || saved === 'dark') return saved;
+    } catch (_) {}
+    return window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  }
+
+  function setTheme(theme, persist = true) {
+    const next = theme === 'light' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    document.documentElement.style.colorScheme = next;
+    if (themeMeta) themeMeta.content = next === 'light' ? '#f4f0e7' : '#0c100d';
+
+    $$('.themeToggle').forEach((button) => {
+      const target = next === 'dark' ? 'light' : 'dark';
+      button.setAttribute('aria-label', `Switch to ${target} mode`);
+      button.title = `Switch to ${target} mode`;
+    });
+
+    if (persist) {
+      try { localStorage.setItem(themeStorageKey, next); } catch (_) {}
+    }
+  }
+
+  function toggleTheme() {
+    setTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
+  }
+
   function applyData() {
-    document.title = `${data.title} — لفُوسْتِينا`;
+    document.title = `${data.title} — For Faustina`;
     $('#songTitle').textContent = data.title;
-    $('#songArtist').textContent = data.artist;
+    $('#songArtist').textContent = data.artist || 'For Faustina';
     $('#gateTitle').textContent = data.title;
     $('#gateOccasion').textContent = data.occasion;
     $('#footerNote').textContent = data.occasion;
@@ -52,15 +84,25 @@
       const el = $(selector);
       el.src = data.cover;
     });
+
     audio.src = data.audio;
     durationLabel.textContent = formatTime(data.duration || 0);
 
+    const downloadName = data.downloadName || 'For-Faustina.mp3';
+    ['#downloadMp3Button', '#sheetDownloadButton'].forEach((selector) => {
+      const link = $(selector);
+      if (!link) return;
+      link.href = data.audio;
+      link.download = downloadName;
+    });
+
     if ('mediaSession' in navigator && window.MediaMetadata) {
+      const coverType = /\.png(?:$|\?)/i.test(data.cover) ? 'image/png' : 'image/jpeg';
       navigator.mediaSession.metadata = new MediaMetadata({
         title: data.title,
-        artist: data.artist,
+        artist: data.artist || 'For Faustina',
         album: data.occasion,
-        artwork: [{ src: data.cover, sizes: '360x360', type: 'image/jpeg' }],
+        artwork: [{ src: data.cover, sizes: '512x512', type: coverType }],
       });
       navigator.mediaSession.setActionHandler('play', () => audio.play());
       navigator.mediaSession.setActionHandler('pause', () => audio.pause());
@@ -97,6 +139,7 @@
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'lyricLine';
+        button.dir = 'rtl';
         button.dataset.index = String(index);
         button.dataset.time = String(normalized.time);
         button.setAttribute('aria-label', `${normalized.text} — ${formatTime(normalized.time)}`);
@@ -104,6 +147,7 @@
         const text = document.createElement('span');
         text.className = 'lyricText';
         text.textContent = normalized.text;
+
         const badge = document.createElement('span');
         badge.className = 'lyricTimeBadge';
         badge.textContent = formatTime(normalized.time, true);
@@ -146,8 +190,6 @@
     flatLyrics[index].time = Math.round(Math.min(Math.max(Number(seconds) || 0, previous), duration) * 100) / 100;
     refreshLyricTimeUi(index);
 
-    // Keep following lines in order. This lets the tap-to-sync workflow move a
-    // line later than its original seed without getting trapped by the next line.
     for (let i = index + 1; i < flatLyrics.length; i += 1) {
       const minimum = Math.round((flatLyrics[i - 1].time + 0.05) * 100) / 100;
       if (flatLyrics[i].time >= minimum) break;
@@ -227,14 +269,14 @@
 
   function setPlayingState(isPlaying) {
     document.body.classList.toggle('isPlaying', isPlaying);
-    playButton.setAttribute('aria-label', isPlaying ? 'إيقاف مؤقت' : 'تشغيل');
-    playButton.title = isPlaying ? 'إيقاف مؤقت' : 'تشغيل';
+    playButton.setAttribute('aria-label', isPlaying ? 'Pause' : 'Play');
+    playButton.title = isPlaying ? 'Pause' : 'Play';
     cancelAnimationFrame(rafId);
     if (isPlaying) rafId = requestAnimationFrame(animationLoop);
   }
 
   function togglePlayback() {
-    if (audio.paused) audio.play().catch(() => showToast('دوسي تشغيل مرة تانية عشان يبدأ الصوت'));
+    if (audio.paused) audio.play().catch(() => showToast('Tap play once more to start the audio.'));
     else audio.pause();
   }
 
@@ -253,7 +295,7 @@
 
   async function sharePage() {
     const shareData = {
-      title: data.title,
+      title: `${data.title} — For Faustina`,
       text: `${data.title} — ${data.occasion}`,
       url: location.href.split('?')[0],
     };
@@ -262,12 +304,12 @@
         await navigator.share(shareData);
       } else if (navigator.clipboard && location.protocol !== 'file:') {
         await navigator.clipboard.writeText(shareData.url);
-        showToast('اللينك اتنسخ ♡');
+        showToast('Link copied ♡');
       } else {
-        showToast('بعد الرفع على الإنترنت هتقدري تنسخي اللينك من هنا');
+        showToast('Once the page is online, you can share its link from here.');
       }
     } catch (error) {
-      if (error?.name !== 'AbortError') showToast('ماقدرتش أفتح المشاركة دلوقتي');
+      if (error?.name !== 'AbortError') showToast('Could not open sharing right now.');
     }
   }
 
@@ -314,15 +356,14 @@
   function updateEditorCard() {
     const line = flatLyrics[selectedEditorIndex];
     if (!line) return;
-    $('#selectedLineNumber').textContent = `السطر ${selectedEditorIndex + 1} من ${flatLyrics.length}`;
+    $('#selectedLineNumber').textContent = `Line ${selectedEditorIndex + 1} of ${flatLyrics.length}`;
     $('#selectedLyricText').textContent = line.text;
     $('#selectedLyricTime').textContent = formatTime(line.time, true);
   }
 
   function markAndAdvance() {
-    const current = audio.currentTime;
-    setLyricTime(selectedEditorIndex, current, true);
-    showToast(`اتثبت عند ${formatTime(flatLyrics[selectedEditorIndex].time, true)}`);
+    setLyricTime(selectedEditorIndex, audio.currentTime, true);
+    showToast(`Marked at ${formatTime(flatLyrics[selectedEditorIndex].time, true)}`);
     if (selectedEditorIndex < flatLyrics.length - 1) selectEditorLine(selectedEditorIndex + 1, true);
   }
 
@@ -345,16 +386,16 @@
     link.click();
     link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    showToast('الملف اتحمّل — استبدله بالقديم');
+    showToast('Downloaded. Replace the old song-data.js file with this one.');
   }
 
   function resetTimings() {
-    if (!confirm('ترجّع كل التوقيتات للنسخة الأصلية؟')) return;
+    if (!confirm('Reset every lyric line to the original timing?')) return;
     originalTimes.forEach((time, index) => setLyricTime(index, time, false));
     localStorage.removeItem(storageKey);
     updateActiveLine(true);
     updateEditorCard();
-    showToast('رجّعنا التوقيت الأصلي');
+    showToast('Original timings restored.');
   }
 
   function openGift({ play = true } = {}) {
@@ -429,10 +470,15 @@
 
     $('#heartButton').addEventListener('click', (event) => {
       event.currentTarget.classList.toggle('isLoved');
-      showToast(event.currentTarget.classList.contains('isLoved') ? 'اتحفظت في القلب ♡' : 'شيلناها من القلب');
+      showToast(event.currentTarget.classList.contains('isLoved') ? 'Saved to favorites ♡' : 'Removed from favorites');
     });
 
     $('#mobileLyricsButton').addEventListener('click', () => $('#lyricsPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }));
+
+    $$('.themeToggle').forEach((button) => button.addEventListener('click', toggleTheme));
+    ['#downloadMp3Button', '#sheetDownloadButton'].forEach((selector) => {
+      $(selector)?.addEventListener('click', () => showToast('Downloading MP3…'));
+    });
 
     document.addEventListener('keydown', (event) => {
       const tag = document.activeElement?.tagName;
@@ -444,7 +490,7 @@
         seekBy(-5);
       } else if (event.code === 'ArrowRight') {
         seekBy(5);
-      } else if (event.key.toLowerCase() === 'e') {
+      } else if (event.key.toLowerCase() === 'e' && params.has('edit')) {
         openEditor();
       } else if (event.key === 'Escape') {
         if (timingEditor.classList.contains('isOpen')) closeEditor();
@@ -453,13 +499,15 @@
     });
   }
 
+  setTheme(preferredTheme(), false);
+  if (params.has('edit')) document.body.classList.add('canEdit');
+
   applyData();
   flattenAndRenderLyrics();
   bindEvents();
   updateEditorCard();
   updateProgress();
 
-  const params = new URLSearchParams(location.search);
   let openedBefore = false;
   try { openedBefore = sessionStorage.getItem('gift-opened') === '1'; } catch (_) {}
   if (openedBefore || params.has('preview') || params.has('edit')) openGift({ play: false });

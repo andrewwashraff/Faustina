@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#10140f" />
-  <meta name="description" content="أغنية أي حاجة معاكي — هدية مخصوصة لفُوسْتِينا" />
-  <title>أي حاجة معاكي — لفُوسْتِينا</title>
+  <meta name="theme-color" content="#0c100d" />
+  <meta name="description" content="A personal interactive song made for Faustina." />
+  <title>For Faustina</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -16,145 +16,167 @@
     <div class="grain"></div>
   </div>
 
-  <section class="giftGate" id="giftGate" aria-label="فتح الهدية">
+  <section class="giftGate" id="giftGate" aria-label="Open the gift">
     <div class="giftCard">
+      <button class="iconButton themeToggle gateThemeToggle" type="button" aria-label="Switch color theme" title="Switch color theme">
+        <span class="sunIcon" aria-hidden="true">☀</span>
+        <span class="moonIcon" aria-hidden="true">☾</span>
+      </button>
       <div class="giftGlow" aria-hidden="true"></div>
-      <img id="gateCover" class="gateCover" src="assets/cover.jpg" alt="غلاف الأغنية" />
-      <p class="eyebrow">هدية صغيرة معمولة مخصوص ليكي</p>
+      <img id="gateCover" class="gateCover" src="assets/cover.jpg" alt="Song cover" />
+      <p class="eyebrow">A SONG MADE JUST FOR YOU</p>
       <h1 id="gateTitle">أي حاجة معاكي</h1>
-      <p id="gateOccasion" class="giftOccasion">كل سنة وإنتي حبيبتي ♡</p>
+      <p id="gateOccasion" class="giftOccasion">Happy birthday, my love ♡</p>
       <button class="primaryButton" id="openGiftButton" type="button">
         <span class="buttonIcon" aria-hidden="true">♥</span>
-        افتحي الأغنية
+        Open your song
       </button>
-      <p class="tinyHint">الصوت هيبدأ بعد ما تدوسي</p>
+      <p class="tinyHint">The music will start after you tap the button.</p>
     </div>
   </section>
 
   <div class="appShell" id="appShell">
     <header class="topbar">
-      <button class="iconButton" id="menuButton" type="button" aria-label="المزيد" title="المزيد">
+      <button class="iconButton" id="menuButton" type="button" aria-label="More options" title="More options">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
       </button>
+
       <div class="nowPlayingLabel">
         <span class="pulseDot"></span>
         <span>NOW PLAYING</span>
       </div>
-      <button class="iconButton" id="shareButton" type="button" aria-label="مشاركة" title="مشاركة">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a3 3 0 1 0-2.83-4A3 3 0 0 0 15 5c0 .18.02.36.05.53L8.9 9.08A3 3 0 0 0 4 11.4a3 3 0 0 0 4.9 2.52l6.15 3.55c-.03.17-.05.35-.05.53a3 3 0 1 0 .83-2.07l-6.2-3.58c.05-.23.08-.46.08-.7 0-.24-.03-.47-.08-.7l6.2-3.58A2.98 2.98 0 0 0 18 8Z"/></svg>
-      </button>
+
+      <div class="topActions">
+        <button class="iconButton themeToggle" type="button" aria-label="Switch color theme" title="Switch color theme">
+          <span class="sunIcon" aria-hidden="true">☀</span>
+          <span class="moonIcon" aria-hidden="true">☾</span>
+        </button>
+        <button class="iconButton" id="shareButton" type="button" aria-label="Share this page" title="Share this page">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a3 3 0 1 0-2.83-4A3 3 0 0 0 15 5c0 .18.02.36.05.53L8.9 9.08A3 3 0 0 0 4 11.4a3 3 0 0 0 4.9 2.52l6.15 3.55c-.03.17-.05.35-.05.53a3 3 0 1 0 .83-2.07l-6.2-3.58c.05-.23.08-.46.08-.7 0-.24-.03-.47-.08-.7l6.2-3.58A2.98 2.98 0 0 0 18 8Z"/></svg>
+        </button>
+      </div>
     </header>
 
     <main class="playerLayout">
-      <section class="artPanel" aria-label="مشغل الأغنية">
+      <section class="artPanel" aria-label="Music player">
         <div class="artFrame" id="artFrame">
-          <img id="coverImage" src="assets/cover.jpg" alt="غلاف أغنية أي حاجة معاكي" />
+          <img id="coverImage" src="assets/cover.jpg" alt="Song cover" />
           <div class="artShine" aria-hidden="true"></div>
-          <span class="giftStamp" aria-hidden="true">FOR FOSTINA</span>
+          <span class="giftStamp" aria-hidden="true">FOR FAUSTINA</span>
         </div>
 
         <div class="trackMeta">
           <div>
             <h1 id="songTitle">أي حاجة معاكي</h1>
-            <p id="songArtist">هدية مخصوصة لفُوسْتِينا</p>
+            <p id="songArtist">For Faustina</p>
           </div>
-          <button class="heartButton" id="heartButton" type="button" aria-label="إضافة للقلب" title="إضافة للقلب">
+          <button class="heartButton" id="heartButton" type="button" aria-label="Add to favorites" title="Add to favorites">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.2-4.35-9.4-8.55C.8 9 2.25 5 6.15 4.35c2.1-.35 4.05.65 5.1 2.25 1.05-1.6 3-2.6 5.1-2.25C20.25 5 21.7 9 19.9 12.45 17.7 16.65 12 21 12 21Z"/></svg>
           </button>
         </div>
 
         <div class="progressBlock">
-          <input id="seekBar" class="seekBar" type="range" min="0" max="100" value="0" step="0.01" aria-label="تقديم وتأخير الأغنية" />
-          <div class="timeRow" dir="ltr">
+          <input id="seekBar" class="seekBar" type="range" min="0" max="100" value="0" step="0.01" aria-label="Seek through the song" />
+          <div class="timeRow">
             <span id="currentTime">0:00</span>
             <span id="durationTime">7:37</span>
           </div>
         </div>
 
-        <div class="controls" dir="ltr">
-          <button class="controlButton" id="rewindButton" type="button" aria-label="رجوع 10 ثوانٍ" title="رجوع 10 ثوانٍ">
+        <div class="controls">
+          <button class="controlButton" id="rewindButton" type="button" aria-label="Go back 10 seconds" title="Go back 10 seconds">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 8V4L5 9l6 5v-4c3.3 0 6 2.7 6 6 0 .7-.12 1.37-.34 2h2.08c.17-.64.26-1.3.26-2 0-4.42-3.58-8-8-8Z"/><text x="10.8" y="19" font-size="7" text-anchor="middle">10</text></svg>
           </button>
-          <button class="playButton" id="playButton" type="button" aria-label="تشغيل" title="تشغيل">
+          <button class="playButton" id="playButton" type="button" aria-label="Play" title="Play">
             <svg class="playIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7Z"/></svg>
             <svg class="pauseIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zm6 0h4v14h-4z"/></svg>
           </button>
-          <button class="controlButton" id="forwardButton" type="button" aria-label="تقديم 10 ثوانٍ" title="تقديم 10 ثوانٍ">
+          <button class="controlButton" id="forwardButton" type="button" aria-label="Skip forward 10 seconds" title="Skip forward 10 seconds">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 8V4l6 5-6 5v-4c-3.3 0-6 2.7-6 6 0 .7.12 1.37.34 2H5.26A8.03 8.03 0 0 1 5 16c0-4.42 3.58-8 8-8Z"/><text x="13.2" y="19" font-size="7" text-anchor="middle">10</text></svg>
           </button>
         </div>
 
-        <button class="mobileLyricsButton" id="mobileLyricsButton" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v2H4zm0 4h12v2H4zm0 4h16v2H4zm0 4h10v2H4z"/></svg>
-          افتحي الكلمات
-        </button>
+        <div class="utilityActions">
+          <a class="utilityButton downloadButton" id="downloadMp3Button" href="assets/song.mp3" download="For-Faustina.mp3">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 3h2v10.17l3.59-3.58L18 11l-6 6-6-6 1.41-1.41L11 13.17V3ZM5 19h14v2H5v-2Z"/></svg>
+            Download MP3
+          </a>
+          <button class="utilityButton mobileLyricsButton" id="mobileLyricsButton" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v2H4zm0 4h12v2H4zm0 4h16v2H4zm0 4h10v2H4z"/></svg>
+            View lyrics
+          </button>
+        </div>
       </section>
 
-      <section class="lyricsPanel" id="lyricsPanel" aria-label="كلمات الأغنية">
+      <section class="lyricsPanel" id="lyricsPanel" aria-label="Synchronized lyrics">
         <div class="lyricsHeader">
           <div>
             <p class="panelEyebrow">LYRICS</p>
-            <h2>الكلمات</h2>
+            <h2>Lyrics</h2>
           </div>
-          <div class="syncedBadge"><span></span> متزامنة</div>
+          <div class="syncedBadge"><span></span> Synced</div>
         </div>
-        <div class="lyricsScroller" id="lyricsScroller" tabindex="0" aria-live="polite"></div>
+        <div class="lyricsScroller" id="lyricsScroller" dir="rtl" tabindex="0" aria-live="polite"></div>
         <div class="lyricsFade lyricsFadeTop" aria-hidden="true"></div>
         <div class="lyricsFade lyricsFadeBottom" aria-hidden="true"></div>
       </section>
     </main>
 
-    <footer class="footerNote" id="footerNote">كل سنة وإنتي الحكاية ♡</footer>
+    <footer class="footerNote" id="footerNote">Happy birthday, my love ♡</footer>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <div class="sheetBackdrop" id="sheetBackdrop" hidden></div>
-  <aside class="bottomSheet" id="bottomSheet" aria-label="خيارات" aria-hidden="true">
+  <aside class="bottomSheet" id="bottomSheet" aria-label="Song options" aria-hidden="true">
     <div class="sheetHandle"></div>
-    <h3>خيارات الأغنية</h3>
-    <button class="sheetAction" id="editTimingsButton" type="button">
+    <h3>Song options</h3>
+    <button class="sheetAction editorOnly" id="editTimingsButton" type="button">
       <span class="sheetIcon">⏱</span>
-      <span><strong>تعديل توقيت الكلمات</strong><small>ظبط بداية كل سطر بسهولة</small></span>
+      <span><strong>Edit lyric timing</strong><small>Fine-tune the start time of each line</small></span>
     </button>
+    <a class="sheetAction sheetLink" id="sheetDownloadButton" href="assets/song.mp3" download="For-Faustina.mp3">
+      <span class="sheetIcon">↓</span>
+      <span><strong>Download MP3</strong><small>Save the song to this device</small></span>
+    </a>
     <button class="sheetAction" id="copyLinkButton" type="button">
       <span class="sheetIcon">↗</span>
-      <span><strong>مشاركة الصفحة</strong><small>نسخ اللينك أو فتح قائمة المشاركة</small></span>
+      <span><strong>Share this page</strong><small>Share the link or copy it</small></span>
     </button>
     <button class="sheetAction" id="replayGiftButton" type="button">
       <span class="sheetIcon">♥</span>
-      <span><strong>إظهار شاشة الهدية</strong><small>ارجعي للحظة فتح الأغنية</small></span>
+      <span><strong>Replay the gift opening</strong><small>Go back to the first screen</small></span>
     </button>
   </aside>
 
-  <aside class="timingEditor" id="timingEditor" aria-label="محرر توقيت الكلمات" aria-hidden="true">
+  <aside class="timingEditor" id="timingEditor" aria-label="Lyric timing editor" aria-hidden="true">
     <div class="editorTopline">
       <div>
         <p class="panelEyebrow">TIMING EDITOR</p>
-        <h3>ظبط توقيت الكلمات</h3>
+        <h3>Fine-tune the lyrics</h3>
       </div>
-      <button class="iconButton" id="closeEditorButton" type="button" aria-label="إغلاق المحرر">×</button>
+      <button class="iconButton" id="closeEditorButton" type="button" aria-label="Close timing editor">×</button>
     </div>
-    <p class="editorHelp">شغّل الأغنية، ولما السطر المختار يبدأ دوس «ثبّت وروح للي بعده».</p>
+    <p class="editorHelp">Play the song. When the selected lyric starts, press “Mark & next”.</p>
     <div class="selectedLyricCard">
-      <span id="selectedLineNumber">السطر 1 من 100</span>
-      <strong id="selectedLyricText">فُوسْتِينا…</strong>
+      <span id="selectedLineNumber">Line 1 of 100</span>
+      <strong id="selectedLyricText" dir="rtl">فُوسْتِينا…</strong>
       <code id="selectedLyricTime">00:05.00</code>
     </div>
-    <div class="editorTransport" dir="ltr">
-      <button id="editorPrevButton" type="button">السابق</button>
-      <button class="markButton" id="markNextButton" type="button">ثبّت وروح للي بعده</button>
-      <button id="editorNextButton" type="button">التالي</button>
+    <div class="editorTransport">
+      <button id="editorPrevButton" type="button">Previous</button>
+      <button class="markButton" id="markNextButton" type="button">Mark & next</button>
+      <button id="editorNextButton" type="button">Next</button>
     </div>
-    <div class="nudgeRow" dir="ltr">
+    <div class="nudgeRow">
       <button data-nudge="-1" type="button">−1s</button>
       <button data-nudge="-0.25" type="button">−0.25s</button>
       <button data-nudge="0.25" type="button">+0.25s</button>
       <button data-nudge="1" type="button">+1s</button>
     </div>
     <div class="editorActions">
-      <button id="exportTimingsButton" type="button">تحميل song-data.js</button>
-      <button class="secondaryButton" id="resetTimingsButton" type="button">رجوع للتوقيت الأصلي</button>
+      <button id="exportTimingsButton" type="button">Download song-data.js</button>
+      <button class="secondaryButton" id="resetTimingsButton" type="button">Reset timings</button>
     </div>
   </aside>
 
